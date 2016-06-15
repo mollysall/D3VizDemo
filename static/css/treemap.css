@@ -1,0 +1,51 @@
+body {
+    padding-top: 50px;
+    padding-left: 0px;
+    /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+*{ font-family: "Gill Sans", "Gill Sans MT"; }
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 960px;
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 60px;
+}
+
+.node {
+  border: solid 1px white;
+  font: 15px sans-serif;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+  padding-top: 2px;
+}
+div.checkbox {
+  position: relative;
+}
+div.tooltip {
+  position: absolute;
+  text-align: left;
+  width: 100px;
+  height: 40px;
+  padding: 4px;
+  font: 12px sans-serif;
+  background: lightgray;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+.chart rect {
+  fill: steelblue;
+}
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
