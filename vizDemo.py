@@ -1,10 +1,30 @@
 from flask import Flask, render_template, g, jsonify, redirect, url_for, abort, flash
 import sqlite3
 import os
-import csv
+import csv, io, StringIO
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+@app.route("/dataRaw")
+def dataRaw():
+    con = sqlite3.connect('data.db')
+    con.text_factory = str
+    cur = con.cursor()
+    cur.execute('select * from data')
+    r = csv2string(cur.fetchall())
+    cur.close
+    return r
+
+def csv2string(data):
+    si = StringIO.StringIO()
+    cw = csv.writer(si)
+    cw.writerows(data)
+    return si.getvalue()
+
+@app.route('/sunburst')
+def sun():
+    return render_template('sunburst.html')
 
 @app.route("/")
 def index():
