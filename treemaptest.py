@@ -19,7 +19,7 @@ def makebarchart():
     return render_template("barchart.html")
 
 
-DATABASE = 'C:\Users\hrobinson\myproject\_app_boilerplate\Tree.db'
+DATABASE = 'Tree.db'
 
 @app.before_request
 def before_request():

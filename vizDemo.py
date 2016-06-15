@@ -27,7 +27,7 @@ def after():
     return render_template('after.html')
 
 
-DATABASE = 'C:\Users\msall\Documents\D3VizDemo\Tree.db'
+DATABASE = 'Tree.db'
 
 @app.before_request
 def before_request():
