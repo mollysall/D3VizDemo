@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Secured Data Visualization</title>
     <script src="//d3js.org/d3.v3.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600">
     <link href="{{ url_for('static', filename='css/sequences.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='js/palette.js') }}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
@@ -19,13 +19,13 @@
 </head>
 <body>
 <br>
-<div class="container"><ul class="nav nav-pills nav-justified">
+<div class="container" style='font-family:"Gill Sans", "Gill Sans MT"''><ul class="nav nav-pills nav-justified">
   <li><a href="/">Home</a></li>
   <li><a href="/treemap">Tree Map</a></li>
   <li><a href="/after">Fishbone</a></li>
   <li class="active"><a href="/sunburst">Sunburst</a></li>
 </ul></div>
-<br>
+<br><br>
 <div id="main">
       <div id="sequence"></div>
       <div id="chart">

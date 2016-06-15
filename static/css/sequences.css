@@ -1,11 +1,8 @@
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Gill Sans", "Gill Sans MT"; 
     font-size: 12px;
     font-weight: 400;
     background-color: #fff;
-    width: 960px;
-    height: 700px;
-    margin-top: 10px;
     padding-top: 30px;
 }
 input {
