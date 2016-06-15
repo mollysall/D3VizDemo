@@ -8,11 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+      <link rel="icon" href="{{url_for('static', filename='box.png')}}"></link>
+
 
     <title>Treemap</title>
+      <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
     <!-- Bootstrap Core CSS -->
-    <link href="static/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <!-- Custom CSS -->
     <style>
@@ -21,6 +25,8 @@
         padding-left: 0px;
         /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     }
+    *{ font-family: "Gill Sans", "Gill Sans MT"; }
+
     </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -49,13 +55,18 @@
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <!--     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
                         <a id="BinName">Bin Name</a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
+            <div class="container"><ul class="nav nav-pills nav-justified">
+  <li><a href="/">Home</a></li>
+  <li class="active"><a href="/treemap">Tree Map</a></li>
+  <li><a href="/after">Fishbone</a></li>
+</ul></div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
