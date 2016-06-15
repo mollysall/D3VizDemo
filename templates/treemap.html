@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Treemap</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="static/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 50px;
+        padding-left: 0px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Treemap</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a id="BinName">Bin Name</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container" id="Tree">
+      <!DOCTYPE html>
+      <meta charset="utf-8">
+      <style>
+
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin: auto;
+        position: relative;
+        width: 960px;
+      }
+
+      form {
+        position: absolute;
+        right: 10px;
+        top: 60px;
+      }
+
+      .node {
+        border: solid 1px white;
+        font: 15px sans-serif;
+        line-height: 12px;
+        overflow: hidden;
+        position: absolute;
+        text-indent: 2px;
+        padding-top: 2px;
+      }
+      div.checkbox {
+        position: relative;
+      }
+      div.tooltip {
+        position: absolute;
+        text-align: left;
+        width: 100px;
+        height: 40px;
+        padding: 4px;
+        font: 12px sans-serif;
+        background: lightgray;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+      }
+      .chart rect {
+        fill: steelblue;
+      }
+      .chart text {
+        fill: white;
+        font: 10px sans-serif;
+        text-anchor: end;
+      }
+
+      </style>
+      <form>
+        <div class="container" id="features">Features
+          <form role="form">
+            <div class="checkbox"><label><input type="checkbox" value="1" onclick="showfeature(this)">1</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="2" onclick="showfeature(this)">2</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="3" onclick="showfeature(this)">3</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="4" onclick="showfeature(this)">4</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="5" onclick="showfeature(this)">5</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="6" onclick="showfeature(this)">6</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="7" onclick="showfeature(this)">7</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="8" onclick="showfeature(this)">8</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="9" onclick="showfeature(this)">9</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="10" onclick="showfeature(this)">10</label></div>
+          </form>
+        </div>
+      </form>
+      <script src="//d3js.org/d3.v3.min.js"></script>
+      <svg class="chart" id="barchart1"></svg>
+      <svg class="chart" id="barchart2"></svg>
+      <!--script src="randomColor.js"></script-->
+      <script>
+
+      var barchart = document.getElementById("barchart1");
+          barchart.style.position = "absolute";
+          barchart.align = "center";
+          //barchart.style.paddingLeft = "100px";
+
+      var barchart2 = document.getElementById("barchart2");
+          barchart2.style.position = "absolute";
+          //barchart.style.paddingLeft = "100px";
+
+      var bar1 = document.createElement("svg"); //set first bar chart
+          bar1.id = "bar1"
+          document.body.appendChild(bar1);
+          bar1.style.position = "absolute";
+          bar1.style.paddingTop = "50px";
+          bar1.style.paddingLeft = "1000px";
+          //bar1.style.background = "lightgray";
+
+      var bar2 = document.createElement("div"); //set second bar chart
+          bar2.id = "bar2"
+          document.body.appendChild(bar2);
+          bar2.style.position = "absolute";
+          bar2.style.paddingTop = "550px";
+          bar2.style.paddingLeft = "1000px";
+          //bar2.style.background = "lightblue";
+
+      var margin = {top: 40, right: 10, bottom: 10, left: 10},
+          width = 960 - margin.left - margin.right,
+          height = 500 - margin.top - margin.bottom;
+
+      var color = d3.scale.category20c();
+      var eachcolor = {}
+
+      var treemap = d3.layout.treemap()
+          .size([width, height])
+          .sticky(true)
+          .value(function(d) { return d.size; });
+
+      var tooltip = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
+
+      var div = d3.select("body").append("div")
+          .style("position", "relative")
+          .style("width", (width + margin.left + margin.right) + "px")
+          .style("height", (height + margin.top + margin.bottom) + "px")
+          .style("left", margin.left + "px")
+          .style("top", margin.top + "px");
+
+      d3.json("/tree", function(error, root) {
+        if (error) throw error;
+
+        var node = div.datum(root).selectAll(".node")
+            .data(treemap.nodes)
+          .enter().append("div")
+            .attr("class", "node")
+            .call(position)
+            .style("background", function(d,i) {
+              return d.children ? null : eachcolor[d.name] = color(i);
+              return d.children ? null : eachcolor[d.name]; })
+            .text(function(d) { return d.children ? null : "Bin" + d.name; });
+
+       node.on("mouseover", show);
+         function show(d) {
+            document.getElementById("BinName").innerHTML = "Bin" + d.name
+
+            tooltip.transition()
+                .duration(200)
+                .style("opacity", .9)
+
+            node.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX-450)+"px");})
+
+            d3.json("/tree/feature/" + d.name, function(error, root) {
+                if (error) throw error;
+                var features = []
+                for (var i = 0; i < root.children.length; i++) {
+                  if (root.children[i].name == d.name) {features.push(String(root.children[i].feature))}
+                }
+                tooltip.html("Name: Bin" + d.name + "\nFeatures: " + features)
+              })
+              }
+
+
+       node.on("mouseout", hide);
+          function hide(d){tooltip.style("opacity", 0)}
+
+        node.on("click", create);
+          function create(d) {
+            d3.selectAll(".newtree").remove() //remove other new treemap if exists
+
+            binnodes = document.getElementsByClassName("node")
+            for (var x = 0; x < binnodes.length; x++) { //gray out other bins when one is selected
+              if (binnodes[x].innerHTML != "Bin" + d.name) {binnodes[x].style.opacity = 0.25}
+              else {binnodes[x].style.opacity = 1}
+            }
+
+            //make new treemap with bins that have same entities as one selected
+            d3.json("/tree/bin/" + d.name, function(error, root) {
+                if (error) throw error;
+
+                var newtree = d3.layout.treemap()
+                  .size([width, height-50])
+                  //.sticky(true)
+                  .value(function(d) { return d.size; });
+
+                var div = d3.select("body").append("div")
+                    .style("position", "relative")
+                    .style("width", (width + margin.left + margin.right) + "px")
+                    .style("height", (height + margin.top + margin.bottom) + "px")
+                    .style("left", margin.left + "px")
+                    .style("top", margin.top + "px")
+                    .attr("class","newtree");
+
+
+                var node = div.datum(root).selectAll(".node")
+                    .data(newtree.nodes)
+                  .enter().append("div")
+                    .attr("class", "node")
+                    .call(position)
+                    .style("background", function(d,i) { return d.children ? null : eachcolor[d.name] })
+                    .text(function(d) { return d.children ? null : "Bin" + d.name; });
+
+                node.on("click", newbarchart); //make bar chart of features
+                    function newbarchart(d) {
+                      bar2.innerHTML = "Name: Bin" + d.name + "\n "
+                    }
+                  });
+
+                  //bar1.innerHTML= "Name: Bin" + d.name + "\n "
+                  //bar2.innerHTML = '';
+                  d3.selectAll("g").remove()
+                  var binfeatures = []
+                      d3.json("/tree/feature/" + d.name, function(error, root) {
+                        if (error) throw error;
+                            for (var i = 0; i < root.children.length; i++) {
+                              if (root.children[i].name == d.name) {binfeatures.push(root.children[i].feature)}
+                            }
+                      });
+
+                  var newdata = [];
+                      d3.json("/tree/entityfeatures", function(error, root) {
+                        if (error) throw error;
+                          for (var i = 0; i < binfeatures.length; i++) {
+                              var featuretotalcount = 0
+                              var featureobservedcount = 0
+                              for (var x = 0; x < root.children.length; x++) {
+                                if (root.children[x].feature == binfeatures[i]) {
+                                  featuretotalcount ++
+                                  if (root.children[x].observed == "true") {featureobservedcount ++}
+                              }
+                            }
+                            var observedpercentage = Number(parseFloat((featureobservedcount / featuretotalcount) * 100).toFixed(2))
+                            newdata.push(observedpercentage)
+                          }
+                          var data = newdata;
+
+                          var barwidth = 100,
+                              barHeight = 20;
+
+
+                          var x = d3.scale.linear()
+                              .domain([0, 100])
+                              .range([0, barwidth]);
+
+                          var chart1 = d3.select("#barchart1")
+                              .attr("width", barwidth)
+                              .attr("height", barHeight * data.length);
+
+                          var bar = chart1.selectAll("g")
+                              .data(data)
+                            .enter().append("g")
+                              .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+
+                          bar.append("rect")
+                              .attr("width", x)
+                              .attr("height", barHeight - 1);
+
+                          bar.append("text")
+                              .attr("x", function(d) { return x(d) - 3; })
+                              .attr("y", barHeight / 2)
+                              .attr("dy", ".35em")
+                              .text(function(d) { return d + "%"; });
+                      });
+                      entitylist = []
+                      d3.json("/tree/bin/entities/" + d.name, function(error, root) {
+                        if (error) throw error;
+                            for (var i = 0; i < root.children.length; i++) {
+                              entitylist.push(root.children[i].name)
+                            }
+                      bar2.innerHTML= "Name: Bin" + d.name +"<br />Entities: " + entitylist
+                      });
+                  }
+
+        d3.selectAll("input").on("change", function change() {
+          var value = this.value === "count"
+              ? function() { return 1; }
+              : function(d) { return d.size; };
+
+          node
+              .data(treemap.value(value).nodes)
+            .transition()
+              .duration(1500)
+              .call(position);
+      });
+      });
+      var featureschecked = {}
+
+      //highlight bins containing features checked
+      function showfeature(d) {
+        if (d.value in featureschecked) {delete featureschecked[d.value]}
+        else {featureschecked[d.value] = String(d.value)}
+
+        d3.json("/tree/feature/" + d.value, function(error, root) {
+          if (error) throw error;
+
+          var allnodes = document.getElementsByClassName("node"); //allbins
+          var binwithfeat = {}  //bin names with the feature
+
+          for (var i = 0; i < root.children.length; i++) {
+            var thisfeature= String(root.children[i].feature)
+            var name = "Bin" + root.children[i].name
+            if (thisfeature in featureschecked) {
+              binwithfeat[name] = thisfeature}
+            }//add each bin name with feature
+
+          for (var x = 0; x < allnodes.length; x++) {
+            //if ((allnodes[x].innerHTML in binwithfeat) & (allnodes[x].style.background != "lightgray")) {}
+            //else if (allnodes[x].innerHTML in binwithfeat) {
+                //if (allnodes[x].style.background = "lightgray") {
+                  //allnodes[x].style.background = eachcolor[allnodes[x].innerHTML]
+            //}}
+            //else {allnodes[x].style.background = "lightgray"}
+            if ((allnodes[x].innerHTML in binwithfeat) & (allnodes[x].style.opacity != 0.25)) {}
+            else if (allnodes[x].innerHTML in binwithfeat) {
+                if (allnodes[x].style.opacity = 0.25) {
+                  allnodes[x].style.opacity = 1.0
+            }}
+            else if (Object.keys(binwithfeat).length === 0) {allnodes[x].style.opacity = 1.0}
+            else {allnodes[x].style.opacity = 0.25}
+        }
+        })
+        };
+
+
+      function position() {
+        this.style("left", function(d) { return d.x + "px"; })
+            .style("top", function(d) { return d.y + "px"; })
+            .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+            .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+      }
+
+      </script>
+
+    </div>
+    <!-- /.container Tree-->
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
