@@ -6,378 +6,570 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{{url_for('static', filename='box.png')}}"></link>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <link href="{{ url_for('static', filename='css/treemap.css') }}" rel="stylesheet"></link>
-    <script src="//d3js.org/d3.v3.min.js"></script>
     <title>Treemap</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="static/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 50px;
+        padding-left: 0px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+  </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 
 <body>
-  <br>
 
-    <div class="container">
-    <ul class="nav nav-pills nav-justified" style = "position: absolute; left: 0px">
-      <li><a href="/">Home</a></li>
-      <li class="active"><a href="/treemap">Tree Map</a></li>
-      <li><a href="/after">Fishbone</a></li>
-      <li><a href="/sunburst">Sunburst</a></li>
-  </ul></div>
-  <br><br>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Treemap</a>
+            </div>
 
-  <div class="container" id="Tree">
-    <form>
-        <div class="container" id="features">Features
-            <form role="form">
-                <div class="checkbox">
-                    <label><input type="checkbox" value="1" onclick="showfeature(this)">1</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="2" onclick="showfeature(this)">2</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="3" onclick="showfeature(this)">3</label>
-                </div>
-                <div class="checkbox">
-                    <label> <input type="checkbox" value="4" onclick="showfeature(this)">4</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="5" onclick="showfeature(this)">5</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="6" onclick="showfeature(this)">6</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="7" onclick="showfeature(this)">7</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="8" onclick="showfeature(this)">8</label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" value="9" onclick="showfeature(this)">9</label>
-                </div>
-                <div class="checkbox">
-                    <label> <input type="checkbox" value="10" onclick="showfeature(this)">10</label>
-                </div>
-            </form>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a id="BinName">Bin Name</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-    </form>
-    <svg class="chart" id="barchart1"></svg>
-    <svg class="chart" id="barchart2"></svg>
-    <!--script src="randomColor.js"></script-->
-    <script>
-        var barchart = document.getElementById("barchart1");
-        barchart.style.position = "absolute";
-        barchart.align = "center";
-        //barchart.style.paddingLeft = "100px";
+        <!-- /.container -->
 
-        var barchart2 = document.getElementById("barchart2");
-        barchart2.style.position = "absolute";
-        //barchart.style.paddingLeft = "100px";
+    </nav>
 
-        var bar1 = document.createElement("svg"); //set first bar chart
-        bar1.id = "bar1"
-        document.body.appendChild(bar1);
-        bar1.style.position = "absolute";
-        bar1.style.paddingTop = "50px";
-        bar1.style.paddingLeft = "1000px";
-        //bar1.style.background = "lightgray";
+    <!-- Page Content -->
+    <div class="container" id="Tree">
+      <!DOCTYPE html>
+      <meta charset="utf-8">
+      <style>
 
-        var bar2 = document.createElement("div"); //set second bar chart
-        bar2.id = "bar2"
-        document.body.appendChild(bar2);
-        bar2.style.position = "absolute";
-        bar2.style.paddingTop = "550px";
-        bar2.style.paddingLeft = "1000px";
-        //bar2.style.background = "lightblue";
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin: auto;
+        position: relative;
+        width: 960px;
+      }
 
-        var margin = {
-            top: 40,
-            right: 10,
-            bottom: 10,
-            left: 10
-        },
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+      form {
+        position: absolute;
+        right: 10px;
+        top: 60px;
+      }
 
-        var color = d3.scale.category20c();
-        var eachcolor = {}
+      .node {
+        border: solid 1px white;
+        font: 15px sans-serif;
+        line-height: 12px;
+        overflow: hidden;
+        position: absolute;
+        text-indent: 2px;
+        padding-top: 2px;
+      }
+      div.checkbox {
+        position: relative;
+      }
+      div.tooltip {
+        position: absolute;
+        text-align: left;
+        width: 100px;
+        height: 40px;
+        padding: 4px;
+        font: 12px sans-serif;
+        background: lightgray;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+      }
+      .chart rect {
+        fill: steelblue;
+        opacity: 0.75;
+      }
+      .chart text {
+        fill: black;
+        font: 10px sans-serif;
+        text-anchor: end;
+      }
 
-        var treemap = d3.layout.treemap()
-        .size([width, height])
-        .sticky(true)
-        .value(function(d) {
-            return d.size;
-        });
+      </style>
+      <form>
+        <div class="container" id="features">Features
+          <form role="form">
+            <div class="checkbox"><label><input type="checkbox" value="1" onclick="showfeature(this)">F1</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="2" onclick="showfeature(this)">F2</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="3" onclick="showfeature(this)">F3</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="4" onclick="showfeature(this)">F4</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="5" onclick="showfeature(this)">F5</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="6" onclick="showfeature(this)">F6</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="7" onclick="showfeature(this)">F7</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="8" onclick="showfeature(this)">F8</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="9" onclick="showfeature(this)">F9</label></div>
+            <div class="checkbox"><label><input type="checkbox" value="10" onclick="showfeature(this)">F10</label></div>
+          </form>
+        </div>
+      </form>
+      <script src="//d3js.org/d3.v3.min.js"></script>
+      <script type="text/javascript" src="static/numeric-1.2.4.js"></script>
+      <script type="text/javascript" src="static/venn.js"></script>
+      <svg class="chart" id="barchart1"></svg>
+      <svg class="chart" id="barchart2"></svg>
+      <svg class="chart" id="venndiagram"></svg>
+      <!--script src="randomColor.js"></script-->
+      <script>
 
-        var tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
+      var treemap1title = document.createElement("div"); //first treemap title
+          treemap1title.id = "treemap1title"
+          document.body.appendChild(treemap1title);
+          treemap1title.style.position = "absolute";
+          treemap1title.style.top = "60px";
+          treemap1title.style.left = "10px";
+          treemap1title.innerHTML = "Bin Distribution".bold()
 
-        var div = d3.select("body").append("div")
-        .style("position", "relative")
-        .style("width", (width + margin.left + margin.right) + "px")
-        .style("height", (height + margin.top + margin.bottom) + "px")
-        .style("left", margin.left + "px")
-        .style("top", margin.top + "px");
+      var treemap2title = document.createElement("div"); //second treemap title
+          treemap2title.id = "treemap2title"
+          document.body.appendChild(treemap2title);
+          treemap2title.style.position = "absolute";
+          treemap2title.style.top = "560px";
+          treemap2title.style.left = "10px";
 
-        d3.json("/tree", function(error, root) {
-            if (error) throw error;
+      var barchart = document.getElementById("barchart1"); //first bar chart
+          barchart.style.position = "absolute";
+          barchart.style.left = "1030px";
+          barchart.style.top = "220px";
 
-            var node = div.datum(root).selectAll(".node")
+      var barchart2 = document.getElementById("barchart2");//second bar chart
+          barchart2.style.position = "absolute";
+          barchart2.style.left = "1030px";
+          barchart2.style.top = "470px";
+
+      var bar1 = document.createElement("div"); //first bar chart text
+          bar1.id = "bar1"
+          document.body.appendChild(bar1);
+          bar1.style.position = "absolute";
+          bar1.style.top = "100px";
+          bar1.style.left = "1000px";
+          //bar1.style.border = "1px solid black";
+
+      var bar2 = document.createElement("div"); //second bar chart text
+          bar2.id = "bar2"
+          document.body.appendChild(bar2);
+          bar2.style.position = "absolute";
+          bar2.style.top = "350px";
+          bar2.style.left = "1000px";
+          //bar2.style.border = "thin solid black";
+
+      var venn = document.getElementById("venndiagram");//second bar chart
+          venn.style.position = "absolute";
+          venn.style.left = "1030px";
+          venn.style.top = "610px";
+          venn.height = "400px";
+
+      var venntitle = document.createElement("div"); //second bar chart text
+          venntitle.id = "venntitle"
+          document.body.appendChild(venntitle);
+          venntitle.style.position = "absolute";
+          venntitle.style.top = "610px";
+          venntitle.style.left = "1000px";
+
+      var margin = {top: 40, right: 10, bottom: 10, left: 10},
+          width = 960 - margin.left - margin.right,
+          height = 500 - margin.top - margin.bottom;
+
+      var color = d3.scale.category20c();
+      var eachcolor = {}
+
+      var featurecolor = d3.scale.category10();
+      var featclrs = {}
+      var allcheckbox = d3.selectAll(".checkbox")
+      for (var x = 0; x < allcheckbox[0].length; x++) {featclrs[allcheckbox[0][x].innerText] = featurecolor(x)}
+
+      var entitylist1 = []
+      var firstbinname = ""
+
+
+      var treemap = d3.layout.treemap()
+          .size([width, height])
+          .sticky(true)
+          .value(function(d) { return d.size; });
+
+      var tooltip = d3.select("body").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 0);
+
+      var div = d3.select("body").append("div")
+          .attr("id", "treemap1")
+          .style("position", "relative")
+          .style("width", (width + margin.left + margin.right) + "px")
+          .style("height", (height + margin.top + margin.bottom) + "px")
+          .style("left", margin.left + "px")
+          .style("top", margin.top + "px");
+
+      d3.json("/tree", function(error, root) {
+        if (error) throw error;
+
+        var node = div.datum(root).selectAll(".node")
             .data(treemap.nodes)
-            .enter().append("div")
+          .enter().append("div")
             .attr("class", "node")
             .call(position)
-            .style("background", function(d, i) {
-                return d.children ? null : eachcolor[d.name] = color(i);
-                return d.children ? null : eachcolor[d.name];
-            })
-            .text(function(d) {
-                return d.children ? null : "Bin" + d.name;
-            });
+            .style("background", function(d,i) {
+              return d.children ? null : eachcolor[d.name] = color(i);
+              return d.children ? null : eachcolor[d.name]; })
+            .text(function(d) { return d.children ? null : "Bin" + d.name; });
 
-            node.on("mouseover", show);
+       node.on("mouseover", show);
+         function show(d) {
+            document.getElementById("BinName").innerHTML = "Bin" + d.name
 
-            function show(d) {
-                //document.getElementById("BinName").innerHTML = "Bin" + d.name
-
-                tooltip.transition()
+            tooltip.transition()
                 .duration(200)
                 .style("opacity", .9)
 
-                node.on("mousemove", function() {
-                    return tooltip.style("top", (event.pageY - 10) + "px").style("left", (event.pageX - 450) + "px");
-                })
+            node.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX-450)+"px");})
 
-                d3.json("/tree/feature/" + d.name, function(error, root) {
-                    if (error) throw error;
-                    var features = []
-                    for (var i = 0; i < root.children.length; i++) {
-                        if (root.children[i].name == d.name) {
-                            features.push(String(root.children[i].feature))
-                        }
-                    }
-                    tooltip.html("Name: Bin" + d.name + "\nFeatures: " + features)
-                })
-            }
-
-
-            node.on("mouseout", hide);
-
-            function hide(d) {
-                tooltip.style("opacity", 0)
-            }
-
-            node.on("click", create);
-
-            function create(d) {
-                d3.selectAll(".newtree").remove() //remove other new treemap if exists
-
-                binnodes = document.getElementsByClassName("node")
-                for (var x = 0; x < binnodes.length; x++) { //gray out other bins when one is selected
-                    if (binnodes[x].innerHTML != "Bin" + d.name) {
-                        binnodes[x].style.opacity = 0.25
-                    } else {
-                        binnodes[x].style.opacity = 1
-                    }
+            d3.json("/tree/feature/" + d.name, function(error, root) {
+                if (error) throw error;
+                var features = []
+                for (var i = 0; i < root.children.length; i++) {
+                  if (root.children[i].name == d.name) {features.push(String(root.children[i].feature))}
                 }
-
-                //make new treemap with bins that have same entities as one selected
-                d3.json("/tree/bin/" + d.name, function(error, root) {
-                    if (error) throw error;
-
-                    var newtree = d3.layout.treemap()
-                    .size([width, height - 50])
-                        //.sticky(true)
-                        .value(function(d) {
-                            return d.size;
-                        });
-
-                        var div = d3.select("body").append("div")
-                        .style("position", "relative")
-                        .style("width", (width + margin.left + margin.right) + "px")
-                        .style("height", (height + margin.top + margin.bottom) + "px")
-                        .style("left", margin.left + "px")
-                        .style("top", margin.top + "px")
-                        .attr("class", "newtree");
+                tooltip.html("Name: Bin" + d.name + "\nFeatures: " + features)
+              })
+              }
 
 
-                        var node = div.datum(root).selectAll(".node")
-                        .data(newtree.nodes)
-                        .enter().append("div")
-                        .attr("class", "node")
-                        .call(position)
-                        .style("background", function(d, i) {
-                            return d.children ? null : eachcolor[d.name]
-                        })
-                        .text(function(d) {
-                            return d.children ? null : "Bin" + d.name;
-                        });
+       node.on("mouseout", hide);
+          function hide(d){tooltip.style("opacity", 0)}
 
-                    node.on("click", newbarchart); //make bar chart of features
-                    function newbarchart(d) {
-                        bar2.innerHTML = "Name: Bin" + d.name + "\n "
-                    }
-                });
+        node.on("click", create);
+          function create(d) {
+            d3.selectAll(".newtree").remove() //remove other new treemap if exists
+            treemap2title.innerHTML = "Comparison Distribution".bold()
 
-                //bar1.innerHTML= "Name: Bin" + d.name + "\n "
-                //bar2.innerHTML = '';
-                d3.selectAll("g").remove()
-                var binfeatures = []
-                d3.json("/tree/feature/" + d.name, function(error, root) {
-                    if (error) throw error;
-                    for (var i = 0; i < root.children.length; i++) {
-                        if (root.children[i].name == d.name) {
-                            binfeatures.push(root.children[i].feature)
-                        }
-                    }
-                });
-
-                var newdata = [];
-                d3.json("/tree/entityfeatures", function(error, root) {
-                    if (error) throw error;
-                    for (var i = 0; i < binfeatures.length; i++) {
-                        var featuretotalcount = 0
-                        var featureobservedcount = 0
-                        for (var x = 0; x < root.children.length; x++) {
-                            if (root.children[x].feature == binfeatures[i]) {
-                                featuretotalcount++
-                                if (root.children[x].observed == "true") {
-                                    featureobservedcount++
-                                }
-                            }
-                        }
-                        var observedpercentage = Number(parseFloat((featureobservedcount / featuretotalcount) * 100).toFixed(2))
-                        newdata.push(observedpercentage)
-                    }
-                    var data = newdata;
-
-                    var barwidth = 100,
-                    barHeight = 20;
-
-
-                    var x = d3.scale.linear()
-                    .domain([0, 100])
-                    .range([0, barwidth]);
-
-                    var chart1 = d3.select("#barchart1")
-                    .attr("width", barwidth)
-                    .attr("height", barHeight * data.length);
-
-                    var bar = chart1.selectAll("g")
-                    .data(data)
-                    .enter().append("g")
-                    .attr("transform", function(d, i) {
-                        return "translate(0," + i * barHeight + ")";
-                    });
-
-                    bar.append("rect")
-                    .attr("width", x)
-                    .attr("height", barHeight - 1);
-
-                    bar.append("text")
-                    .attr("x", function(d) {
-                        return x(d) - 3;
-                    })
-                    .attr("y", barHeight / 2)
-                    .attr("dy", ".35em")
-                    .text(function(d) {
-                        return d + "%";
-                    });
-                });
-                entitylist = []
-                d3.json("/tree/bin/entities/" + d.name, function(error, root) {
-                    if (error) throw error;
-                    for (var i = 0; i < root.children.length; i++) {
-                        entitylist.push(root.children[i].name)
-                    }
-                    bar2.innerHTML = "Name: Bin" + d.name + "<br />Entities: " + entitylist
-                });
+            binnodes = document.getElementsByClassName("node")
+            for (var x = 0; x < binnodes.length; x++) { //gray out other bins when one is selected
+              if (binnodes[x].innerHTML != "Bin" + d.name) {binnodes[x].style.opacity = 0.25}
+              else {binnodes[x].style.opacity = 1}
             }
 
-            d3.selectAll("input").on("change", function change() {
-                var value = this.value === "count" ?
-
-                function() {
-                    return 1;
-                } :
-                function(d) {
-                    return d.size;
-                };
-
-                node
-                .data(treemap.value(value).nodes)
-                .transition()
-                .duration(1500)
-                .call(position);
-            });
-        });
-        var featureschecked = {}
-
-        //highlight bins containing features checked
-        function showfeature(d) {
-            if (d.value in featureschecked) {
-                delete featureschecked[d.value]
-            } else {
-                featureschecked[d.value] = String(d.value)
-            }
-
-            d3.json("/tree/feature/" + d.value, function(error, root) {
+            //make new treemap with bins that have same entities as one selected
+            d3.json("/tree/bin/" + d.name, function(error, root) {
                 if (error) throw error;
 
-                var allnodes = document.getElementsByClassName("node"); //allbins
-                var binwithfeat = {} //bin names with the feature
+                var newtree = d3.layout.treemap()
+                  .size([width, height-50])
+                  //.sticky(true)
+                  .value(function(d) { return d.size; });
 
-                for (var i = 0; i < root.children.length; i++) {
-                    var thisfeature = String(root.children[i].feature)
-                    var name = "Bin" + root.children[i].name
-                    if (thisfeature in featureschecked) {
-                        binwithfeat[name] = thisfeature
-                    }
-                } //add each bin name with feature
+                var div = d3.select("body").append("div")
+                    .style("position", "relative")
+                    .style("width", (width + margin.left + margin.right) + "px")
+                    .style("height", (height + margin.top + margin.bottom) + "px")
+                    .style("left", margin.left + "px")
+                    .style("top", margin.top + "px")
+                    .attr("class","newtree");
 
-                for (var x = 0; x < allnodes.length; x++) {
-                    //if ((allnodes[x].innerHTML in binwithfeat) & (allnodes[x].style.background != "lightgray")) {}
-                    //else if (allnodes[x].innerHTML in binwithfeat) {
-                    //if (allnodes[x].style.background = "lightgray") {
-                    //allnodes[x].style.background = eachcolor[allnodes[x].innerHTML]
-                    //}}
-                    //else {allnodes[x].style.background = "lightgray"}
-                    if ((allnodes[x].innerHTML in binwithfeat) & (allnodes[x].style.opacity != 0.25)) {} else if (allnodes[x].innerHTML in binwithfeat) {
-                        if (allnodes[x].style.opacity = 0.25) {
-                            allnodes[x].style.opacity = 1.0
-                        }
-                    } else if (Object.keys(binwithfeat).length === 0) {
-                        allnodes[x].style.opacity = 1.0
-                    } else {
-                        allnodes[x].style.opacity = 0.25
+
+                var node = div.datum(root).selectAll(".node")
+                    .data(newtree.nodes)
+                  .enter().append("div")
+                    .attr("class", "node")
+                    .call(position)
+                    .style("background", function(d,i) { return d.children ? null : eachcolor[d.name] })
+                    .text(function(d) { return d.children ? null : "Bin" + d.name; });
+
+                node.on("click", newbarchart); //make bar chart of features
+                    function newbarchart(d) {
+                      d3.selectAll(".newbars").remove();
+
+                      var binfeatures = []
+                      var featurelist = ""
+                          d3.json("/tree/feature/" + d.name, function(error, root) {
+                            if (error) throw error;
+                                for (var i = 0; i < root.children.length; i++) {
+                                  if (root.children[i].name == d.name) {binfeatures.push(root.children[i].feature)}
+                                }
+                                for (var i = 0; i < binfeatures.length; i++) {
+                                  featurelist = featurelist + ("F" + binfeatures[i] + "<br />")
+                                }
+                          });
+
+                      var newdata = [];
+                          d3.json("/tree/entityfeatures", function(error, root) {
+                            if (error) throw error;
+                              for (var i = 0; i < binfeatures.length; i++) {
+                                  var featuretotalcount = 0
+                                  var featureobservedcount = 0
+                                  for (var x = 0; x < root.children.length; x++) {
+                                    if (root.children[x].feature == binfeatures[i]) {
+                                      featuretotalcount ++
+                                      if (root.children[x].observed == "true") {featureobservedcount ++}
+                                  }
+                                }
+                                var observedpercentage = Number(parseFloat((featureobservedcount / featuretotalcount) * 100).toFixed(1))
+                                newdata.push(observedpercentage)
+                              }
+                              var data = newdata;
+
+                              var barwidth = 200,
+                                  barHeight = 20;
+
+
+                              var x = d3.scale.linear()
+                                  .domain([0, 100])
+                                  .range([0, barwidth]);
+
+                              var chart2 = d3.select("#barchart2")
+                                  .attr("width", barwidth)
+                                  .attr("height", barHeight * data.length);
+
+                              var bar = chart2.selectAll("g")
+                                  .data(data)
+                                .enter().append("g")
+                                  .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; })
+                                  .attr("class", "newbars");
+
+                              bar.append("rect")
+                                  .attr("width", x)
+                                  .attr("height", barHeight - 1)
+                                  .style("fill", function(d,i){return featclrs["F" + binfeatures[i]]});
+
+                              bar.append("text")
+                                  .attr("x", function(d) { return x(d) - 3; })
+                                  .attr("y", barHeight / 2)
+                                  .attr("dy", ".35em")
+                                  .text(function(d) { return d + "%"; });
+                          });
+                          entitylist2 = []
+                          d3.json("/tree/bin/entities/" + d.name, function(error, root) {
+                            if (error) throw error;
+                                for (var i = 0; i < root.children.length; i++) {
+                                  entitylist2.push(root.children[i].name)
+                                }
+                          bar2.innerHTML= ("Name: Bin" + d.name).bold() +"<br /><br />Entities: ".bold() + entitylist2 + "<br /><br />Features: <br />".bold() + featurelist
+
+                          //create venn diagram//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                          d3.selectAll(".arc").remove();
+                          venntitle.innerHTML = "Entity Comparison: ".bold()
+
+                          var A="Bin" + firstbinname, B="Bin" + d.name;
+                          var groups = [firstbinname, d.name];
+
+                          var bincount1 = 0
+                          var bincount2 = 0
+                          var shared = 0
+
+                          for (var i = 0; i < entitylist2.length; i++) {
+                            if (entitylist2[i] in entitylist1) {shared ++}
+                            else (bincount2 ++)
+                          }
+                          bincount1 = entitylist1.length - shared
+
+                          var data = [];
+                          for (var i=0; i<bincount1; i++) data.push([A]);
+                          for (var i=0; i<shared; i++) data.push([A, B]);
+                          for (var i=0; i<bincount2; i++) data.push([B]);
+
+                          // Standard D3
+                          var venn = d3.layout.venn().size([200, 200]);
+                          var circle = d3.svg.arc().innerRadius(0).startAngle(0).endAngle(2*Math.PI);
+
+                          var vis = d3.select("#venndiagram")
+                            //.append("svg")
+                              .data([data])
+                              .attr("width", 900).attr("height", 700);
+
+                          var circles = vis.selectAll("g.arc")
+                              .data(venn)
+                            .enter().append("g")
+                              .attr("class", "arc")
+                              .attr("transform", function(d, i){ return "translate(" + (50 + d.x) + "," + (50 + d.y) + ")"; });
+                          circles.append("path")
+                              .attr("fill", function(d, i) { return eachcolor[groups[i]]; })
+                              .attr("opacity", 0.5)
+                              .attr("d", circle);
+                          circles.append("text")
+                              .attr("text-anchor", "middle")
+                              .text(function(d, i) { return d.label; })
+                              .attr("fill", function(d, i) { return color(i); })
+                              .attr("x", function(d, i) { return d.labelX; })
+                              .attr("y", function(d, i) { return d.labelY; });
+                      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        });
+
                     }
-                }
-            })
+                  });
+
+                  //create first bar chart
+                  firstbinname = d.name
+                  bar2.innerHTML = '';
+                  venntitle.innerHTML = '';
+                  d3.selectAll("g").remove();
+                  //barchart.style.background = "lightgray"
+
+                  var binfeatures = []
+                  var featurelist = ""
+                      d3.json("/tree/feature/" + d.name, function(error, root) {
+                        if (error) throw error;
+                            for (var i = 0; i < root.children.length; i++) {
+                              if (root.children[i].name == d.name) {binfeatures.push(root.children[i].feature)}
+                            }
+                            for (var i = 0; i < binfeatures.length; i++) {
+                              featurelist = featurelist + ("F" + binfeatures[i] + "<br />")
+                            }
+                      });
+
+                  var newdata = [];
+                      d3.json("/tree/entityfeatures", function(error, root) {
+                        if (error) throw error;
+                          for (var i = 0; i < binfeatures.length; i++) {
+                              var featuretotalcount = 0
+                              var featureobservedcount = 0
+                              for (var x = 0; x < root.children.length; x++) {
+                                if (root.children[x].feature == binfeatures[i]) {
+                                  featuretotalcount ++
+                                  if (root.children[x].observed == "true") {featureobservedcount ++}
+                              }
+                            }
+                            var observedpercentage = Number(parseFloat((featureobservedcount / featuretotalcount) * 100).toFixed(1))
+                            newdata.push(observedpercentage)
+                          }
+                          var data = newdata;
+
+                          var barwidth = 200,
+                              barHeight = 20;
+
+
+                          var x = d3.scale.linear()
+                              .domain([0, 100])
+                              .range([0, barwidth]);
+
+                          var chart1 = d3.select("#barchart1")
+                              .attr("width", barwidth)
+                              .attr("height", barHeight * data.length);
+
+                          var bar = chart1.selectAll("g")
+                              .data(data)
+                            .enter().append("g")
+                              .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+
+                          bar.append("rect")
+                              .attr("width", x)
+                              .attr("height", barHeight - 1)
+                              .style("fill", function(d,i){return featclrs["F" + binfeatures[i]]});
+
+                          bar.append("text")
+                              .attr("x", function(d) { return x(d) - 3; })
+                              .attr("y", barHeight / 2)
+                              .attr("dy", ".35em")
+                              .text(function(d) { return d + "%"; });
+
+                      });
+                      entitylist1 = []
+                      //var entitylist = []
+                      d3.json("/tree/bin/entities/" + d.name, function(error, root) {
+                        if (error) throw error;
+                            for (var i = 0; i < root.children.length; i++) {
+                              entitylist1.push(root.children[i].name)
+                              //entitylist1[root.children[i].name] = root.children[i].name
+                            }
+                      bar1.innerHTML= ("Name: Bin" + d.name).bold() + "<br /><br />Entities: ".bold() + entitylist1 + "<br /><br />Features: <br />".bold() + featurelist
+                      });
+                  }
+
+        d3.selectAll("input").on("change", function change() {
+          var value = this.value === "count"
+              ? function() { return 1; }
+              : function(d) { return d.size; };
+
+          node
+              .data(treemap.value(value).nodes)
+            .transition()
+              .duration(1500)
+              .call(position);
+      });
+      });
+      var featureschecked = {}
+
+      //highlight bins containing features checked
+      function showfeature(d) {
+        if (d.value in featureschecked) {delete featureschecked[d.value]}
+        else {featureschecked[d.value] = String(d.value)}
+
+        d3.json("/tree/feature/" + d.value, function(error, root) {
+          if (error) throw error;
+
+          var allnodes = document.getElementsByClassName("node"); //allbins
+          var binwithfeat = {}  //bin names with the feature
+
+          for (var i = 0; i < root.children.length; i++) {
+            var thisfeature= String(root.children[i].feature)
+            var name = "Bin" + root.children[i].name
+            if (thisfeature in featureschecked) {
+              binwithfeat[name] = thisfeature}
+            }//add each bin name with feature
+
+          for (var x = 0; x < allnodes.length; x++) {
+            //if ((allnodes[x].innerHTML in binwithfeat) & (allnodes[x].style.background != "lightgray")) {}
+            //else if (allnodes[x].innerHTML in binwithfeat) {
+                //if (allnodes[x].style.background = "lightgray") {
+                  //allnodes[x].style.background = eachcolor[allnodes[x].innerHTML]
+            //}}
+            //else {allnodes[x].style.background = "lightgray"}
+            if ((allnodes[x].innerHTML in binwithfeat) & (allnodes[x].style.opacity != 0.25)) {}
+            else if (allnodes[x].innerHTML in binwithfeat) {
+                if (allnodes[x].style.opacity = 0.25) {
+                  allnodes[x].style.opacity = 1.0
+            }}
+            else if (Object.keys(binwithfeat).length === 0) {allnodes[x].style.opacity = 1.0}
+            else {allnodes[x].style.opacity = 0.25}
+        }
+        })
         };
 
 
-        function position() {
-            this.style("left", function(d) {
-                return d.x + "px";
-            })
-            .style("top", function(d) {
-                return d.y + "px";
-            })
-            .style("width", function(d) {
-                return Math.max(0, d.dx - 1) + "px";
-            })
-            .style("height", function(d) {
-                return Math.max(0, d.dy - 1) + "px";
-            });
-        }
-        </script>
+      function position() {
+        this.style("left", function(d) { return d.x + "px"; })
+            .style("top", function(d) { return d.y + "px"; })
+            .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+            .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+      }
+
+      </script>
+
     </div>
+    <!-- /.container Tree-->
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
 </body>
 
 </html>
