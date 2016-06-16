@@ -151,7 +151,16 @@ def get_binentities(n):
 #         })
 #     return RESULTS
 
-DATABASE = "NPSDATA.db"
+@app.before_request
+def before_request():
+    g.db = sqlite3.connect(DATABASE2)
+
+@app.teardown_request
+def teardown_request(exception):
+    if hasattr(g, 'db'):
+        g.db.close()
+
+DATABASE2 = "NPSDATA.db"
 def get_data():
     rows = g.db.execute("SELECT * FROM NPSData2").fetchall()
     RESULTS = []
