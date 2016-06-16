@@ -262,14 +262,14 @@ function startD3(){
 			}
 			boxlist += "</optgroup>";
 		}
-	
+
 		if(titles[1] != "Date"){
 			boxlist += '<optgroup label="'+titles[1]+'">';
 			for(i=0; i<names1.length; i++){
 				//boxlist += '<input class="letter_button" value="'+names1[i]+'"" type="checkbox" checked="checked">'+names1[i]+"  </input>";
 				z = names1[i];
 				boxlist += '<option value="'+z+'">'+z+"</option>";
-			} 
+			}
 			boxlist += "</optgroupt>";
 		}
 		if(titles[2] != "Date"){
@@ -302,7 +302,7 @@ function startD3(){
 				case 2:
 				temp = names2;
 				break;
-			}	
+			}
 			//make an array dates of all the dates (as date objects)
 			for(i=0; i<temp.length; i++){
 				d = new Date(temp[i]);
@@ -311,7 +311,7 @@ function startD3(){
 			}
 		}
 
-		//my csv should be sorted chronologically, so this code should work.  
+		//my csv should be sorted chronologically, so this code should work.
 		var minDate = dates[0];
 		var maxDate = dates[dates.length-1];
 
@@ -361,12 +361,12 @@ function startD3(){
 				slide: function( event, ui ) {
 					$( "#amount" ).val( (new Date(ui.values[ 0 ] *1000).toDateString() ) + " - " + (new Date(ui.values[ 1 ] *1000)).toDateString() );
 
-	
+
 					selectMin = new Date(ui.values[0]*1000);
 					selectMax = new Date(ui.values[1]*1000);
 					dateFilter(selectMax, selectMin);
 
-			
+
 				}
 			});
 			$( "#amount" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
@@ -416,7 +416,7 @@ function makeTestData(){
 	}
 
 console.log(testData);
-//timeline 
+//timeline
 // testData = [
 // {times: [{"starting_time": 1355752800000, "ending_time": 1355759900000}, {"starting_time": 1355767900000, "ending_time": 1355774400000}]},
 // {times: [{"starting_time": 1355759910000, "ending_time": 1355761900000}, ]},
@@ -509,7 +509,7 @@ function dateFilter(maxDate, minDate){
 // 	.filter(function(e) { return e.checked; })
 // 	.map(function(e) { return +e.value; });
 
-// 	//iterate through dates array and check which dates have been selected 
+// 	//iterate through dates array and check which dates have been selected
 // 	//date, month and year all must match
 // 	//add valid dates (as date objects) to a temporary array called selected
 // 	var j, k, l, m, n;
@@ -519,7 +519,7 @@ function dateFilter(maxDate, minDate){
 // 			n = k.getMonth();
 // 			m = k.getFullYear();
 // 			if(dateNum.indexOf(l) !== -1 && monthNum.indexOf(n) !== -1 && yearNum.indexOf(m) !== -1){
-// 				select.push(k);            
+// 				select.push(k);
 // 			}
 // 		}
 
@@ -590,7 +590,7 @@ function update() {
 		m = k[Object.keys(k)[2]];
 		if(letter.indexOf(l) !== -1 && letter.indexOf(m) !== -1){
 
-			editableS.push(k);            
+			editableS.push(k);
 		}
 	}
 
@@ -604,7 +604,7 @@ function update() {
 		var arr = intersection(editableD, editableS);
 
 		createTheObject(arr);
-	
+
 
 }
 

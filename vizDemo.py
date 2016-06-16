@@ -49,20 +49,12 @@ def after():
 
 DATABASE = 'Tree.db'
 
-@app.before_request
-def before_request():
-    g.db = sqlite3.connect(DATABASE)
-
-@app.teardown_request
-def teardown_request(exception):
-    if hasattr(g, 'db'):
-        g.db.close()
-
 @app.route("/tree")
 def data():
     return jsonify(get_bindata())
 
 def get_bindata():
+    g.db = sqlite3.connect(DATABASE)
     rows = g.db.execute("SELECT binID, count(*) FROM BinEnt group by binID").fetchall()
     RESULTS = {'name': 'BinEnt', 'children': []}
     for i in range(len(rows)):
@@ -70,6 +62,7 @@ def get_bindata():
             'name': rows[i][0], #binID
             'size': rows[i][1], #num ent in bin
         })
+    g.db.close()
     return RESULTS
 
 @app.route("/tree/bin/<int:n>")
@@ -77,6 +70,7 @@ def similarbins(n):
     return jsonify(get_similarbins(n))
 
 def get_similarbins(n):
+    g.db = sqlite3.connect(DATABASE)
     rows = g.db.execute('SELECT binID, count(*) FROM BinEnt where entID in (select entID from BinEnt where binID = {id}) group by binID'\
         .format(id= n)).fetchall()
     RESULTS = {'name': 'Bin' + str(n), 'children': []}
@@ -88,6 +82,7 @@ def get_similarbins(n):
         })
     if RESULTS['children']==[]:
         RESULTS['children'].append({'name':'No similar bins.','size':1})
+    g.db.close()
     return RESULTS
 
 @app.route("/tree/feature/<int:n>")
@@ -95,6 +90,7 @@ def binfeatures(n):
     return jsonify(get_binfeatures(n))
 
 def get_binfeatures(n): #gets all bins and features
+    g.db = sqlite3.connect(DATABASE)
     rows = g.db.execute("SELECT * FROM BinFeat").fetchall()
     RESULTS = {'name': 'BinFeat', 'children': []}
     for i in range(len(rows)):
@@ -102,6 +98,7 @@ def get_binfeatures(n): #gets all bins and features
             'name': rows[i][0], #binID
             'feature': rows[i][1], #bin features
         })
+    g.db.close()
     return RESULTS
 
 @app.route("/tree/entityfeatures")
@@ -110,6 +107,7 @@ def entityfeatures():
 
 def get_entfeatures(): #gets count of num entities for each feature
     #rows = g.db.execute("SELECT featID, count(*) FROM EntFeat group by featID").fetchall()
+    g.db = sqlite3.connect(DATABASE)
     rows = g.db.execute("SELECT * FROM EntFeat").fetchall()
     RESULTS = {'name': 'EntFeat', 'children': []}
     for i in range(len(rows)):
@@ -118,6 +116,7 @@ def get_entfeatures(): #gets count of num entities for each feature
             'feature': rows[i][1], #num entities with feature
             'observed': rows[i][3] #if observed
         })
+    g.db.close()
     return RESULTS
 
 @app.route("/tree/bin/entities/<int:n>")
@@ -125,6 +124,7 @@ def binentities(n):
     return jsonify(get_binentities(n))
 
 def get_binentities(n):
+    g.db = sqlite3.connect(DATABASE)
     rows = g.db.execute('select entID from BinEnt where binID = {id}'\
         .format(id= n)).fetchall()
     RESULTS = {'name': 'Bin' + str(n), 'children': []}
@@ -134,7 +134,7 @@ def get_binentities(n):
         })
     if RESULTS['children']==[]:
         RESULTS['children'].append({'name':'No similar bins.','size':1})
-    print RESULTS
+    g.db.close()
     return RESULTS
 
 # filename = "NPSData2.csv"
@@ -151,17 +151,9 @@ def get_binentities(n):
 #         })
 #     return RESULTS
 
-@app.before_request
-def before_request():
-    g.db = sqlite3.connect(DATABASE2)
-
-@app.teardown_request
-def teardown_request(exception):
-    if hasattr(g, 'db'):
-        g.db.close()
-
 DATABASE2 = "NPSDATA.db"
 def get_data():
+    g.db = sqlite3.connect(DATABASE2)
     rows = g.db.execute("SELECT * FROM NPSData2").fetchall()
     RESULTS = []
     for i in rows:
@@ -171,7 +163,7 @@ def get_data():
             'Location': i[2],
 
         })
-    print len(RESULTS)
+    g.db.close()
     return RESULTS
 
 if __name__ == "__main__":
