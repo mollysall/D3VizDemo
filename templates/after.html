@@ -27,6 +27,7 @@
 	<script src="{{	url_for('static', filename='js/d3.fishbone.js')}}"> </script>
 	<script src="{{	url_for('static', filename='js/d3-timeline.js')}}"></script>
 
+	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
 	<script src="{{	url_for('static', filename='js/multiple-select.js')}}"> </script>
 
@@ -377,8 +378,7 @@ function startD3(){
 
 
 
-		makeTestData();
-     	timelineCircle();
+		makeTestData(jsonDataRef);
 
 
 		//mark checked as true so this entire process only happens once
@@ -390,10 +390,10 @@ function startD3(){
 }
 
 
-function makeTestData(){
-
+function makeTestData(theEvents){
+	testData = [];
 	var temp2 = [];
-	var rawObj = jsonDataRef;
+	var rawObj = theEvents;
 	for(var x=0; x<colors.length; x++){
 		var temp2 = [];
 		var times = new Object();
@@ -414,8 +414,9 @@ function makeTestData(){
 		times.times = temp2;
 		testData.push(times);
 	}
+	console.log(testData);
+	timelineCircle(rawObj);
 
-console.log(testData);
 //timeline
 // testData = [
 // {times: [{"starting_time": 1355752800000, "ending_time": 1355759900000}, {"starting_time": 1355767900000, "ending_time": 1355774400000}]},
@@ -426,31 +427,43 @@ console.log(testData);
 }
 
 
-function timelineCircle() {
-	var chart = d3.timeline()
-          .tickFormat( //
-          	{format: d3.time.format("%Y"),
-          	tickTime: d3.time.years,
-          	tickInterval: 5,
-          	tickSize: 10})
-          .stack()
-          .orient("top")
-          .itemHeight(10)
-          .itemMargin(2)
-          .mouseover(function(d, i, datum){
+function timelineCircle(theEvents) {
 
-          })
-          .click(function(d, i, datum){
-          	var d1 = new Date(d.starting_time);
-          	recenter(d1);
-          })
-          .display("circle"); // toggle between rectangles and circles
-          var svg = d3.select("#timeline2").append("svg").attr("width", width).attr("fill-opacity", 0.3).attr("align", "center")
-                    .datum(testData).call(chart);
+
+	var chart = d3.timeline()
+		.tickFormat( //
+			{format: d3.time.format("%Y"),
+			tickTime: d3.time.years,
+			tickInterval: 5,
+			tickSize: 10})
+		.stack()
+		.orient("top")
+		.itemHeight(10)
+		.itemMargin(2)
+		.mouseover(function(d, i, datum){
+			var dd = new Date(d.starting_time);
+			$( "#garbage" ).html(dd.toDateString());
+
+		})
+		.mouseout(function(d, i, datum){
+			var dd = new Date(d.starting_time);
+			$( "#garbage" ).html('&nbsp;');
+
+		})
+		.click(function(d, i, datum){
+			var d1 = new Date(d.starting_time);
+			recenter(d1, theEvents);
+		})
+		.display("circle"); // toggle between rectangles and circles
+
+		var svg = d3.select("#timeline2").append("svg").attr("width", width).attr("fill-opacity", 0.3).attr("align", "center").attr("id", "tl2")
+		        .datum(testData).call(chart);
+
+
 }
 
-function recenter(date){
-	var rawObj = jsonDataRef;
+function recenter(date, arr){
+	var rawObj = arr;
 	var ret;
 	for(var i=0; i<rawObj.length; i++){
 		k = rawObj[i];
@@ -484,6 +497,8 @@ function dateFilter(maxDate, minDate){
 	svg.remove();
 
 	var arr = intersection(editableD, editableS);
+	d3.select("#tl2").remove();
+	makeTestData(arr);
 
 	createTheObject(arr);
 }
@@ -600,6 +615,7 @@ function update() {
 
 
 		svg.remove();
+
 
 		var arr = intersection(editableD, editableS);
 
@@ -758,8 +774,11 @@ function makePageTable(data)
 	if(startRecord==''){
 		startRecord=0;
 	}
-	console.log(startRecord);
-	if(startRecord == 0){
+
+	if(startRecord==0 && startRecord > pages-1){
+		var navig = '<button type="button" class="btn btn-primary disabled">Prev</button>  <button type="button" class="btn btn-primary disabled" onclick="pageResult(1)">Next</button>'
+	}
+	else if(startRecord == 0){
 		var navig = '<button type="button" class="btn btn-primary disabled">Prev</button>  <button type="button" class="btn btn-primary" onclick="pageResult(1)">Next</button>'
 	}
 	else if(startRecord > pages-1){
@@ -930,9 +949,11 @@ function getParameterByName(name)
 			<div id="slider-range"></div>
 		</div>
 	</div>
+		<p id="garbage"> &nbsp; </p>
 	<div text-align="center">
 		<div id="timeline2" style="text-align:center; border: 0;"></div>
 	</div>
+	<p hidden> 0 </p>
 </div>
 <!--<a class="forwardBack" href="#" onclick="goBack()">Back</a>    <a class="forwardBack" href="#" onclick="goForward()">Forward</a>-->
 

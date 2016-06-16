@@ -6,7 +6,6 @@
     */
 
     // private variables
-    var colors = ["green", "indigo", "midnightblue", "slateblue"];
     var _margin = 50,
     //var _margin = 100,
 
