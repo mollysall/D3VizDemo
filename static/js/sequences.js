@@ -70,6 +70,9 @@ function init() {
     getUniqueItems(csv); //Array of all unique possible steps in the sequences
     numOfUnique = unique.length;
     checkedItems['end'] = null;
+    if (numOfUnique <= 10)
+        for (var x = 0; x < numOfUnique; x++)
+            checkedItems[unique[x]] = null;
     json = buildHierarchy();
     createVisualization(json, true);
 }
@@ -81,13 +84,15 @@ function createVisualization(json, firstRun) {
         initializeBreadcrumbTrail();
         //If there are greater than 10 unique items then use fancytree, else draw a legend and individual checkboxes
         if (numOfUnique >= 10) {
-          document.getElementById("tree").style.visibility = "visible";
-          document.getElementById("btnResetSearch").style.visibility = "visible";
-          document.getElementById("search").style.visibility = "visible";
-          generateCheckBoxes(); //Build the checkbox for each legend item
+            document.getElementById("tree").style.visibility = "visible";
+            document.getElementById("btnResetSearch").style.visibility = "visible";
+            document.getElementById("search").style.visibility = "visible";
+            generateCheckBoxes(); //Build the checkbox for each legend item
         } else {
-          drawLegend();
-          generateCheckBoxesLegend(); //Build the checkbox for each legend item
+            for (var x = 0; x < numOfUnique; x++)
+                checkedItems[unique[x]] = null;
+            drawLegend();
+            generateCheckBoxesLegend(); //Build the checkbox for each legend item
         }
     } else {
         d3.select("#svg").remove(); //Remove and Redraw the visualization with new data
@@ -280,7 +285,7 @@ function getUniqueItems(arr) {
                 unique.push(items[i]); // add each possible step to a large array, do this for every possible sequence
         }
     }
-    unique.move(unique.indexOf('end'),unique.length-1);
+    unique.move(unique.indexOf('end'), unique.length - 1);
 }
 //Generate a unique and random color for each possible item in a sequence
 function generateColors() {
@@ -580,7 +585,7 @@ function generateCheckBoxesLegend() {
             checkbox.type = "checkbox"; // make the element a checkbox
             checkbox.id = unique[i]; // give it a name we can check on the server side
             checkbox.setAttribute("style", "margin-top:10px");
-            checkbox.checked = false;
+            checkbox.checked = true;
 
             //If checkbox is checked make item visible
             checkbox.onclick = function() {
@@ -600,7 +605,7 @@ function generateCheckBoxesLegend() {
         }
     }
 }
-Array.prototype.move = function (old_index, new_index) {
+Array.prototype.move = function(old_index, new_index) {
     if (new_index >= this.length) {
         var k = new_index - this.length;
         while ((k--) + 1) {
