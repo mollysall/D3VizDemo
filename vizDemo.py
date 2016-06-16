@@ -87,7 +87,7 @@ def get_similarbins(n):
                 'size': rows[i][1], #num ent in bin
         })
     if RESULTS['children']==[]:
-        RESULTS['children'].append({'name':'No similar bins.','size':1})       
+        RESULTS['children'].append({'name':'No similar bins.','size':1})
     return RESULTS
 
 @app.route("/tree/feature/<int:n>")
@@ -133,7 +133,7 @@ def get_binentities(n):
             'name': rows[i][0] #entID in bin
         })
     if RESULTS['children']==[]:
-        RESULTS['children'].append({'name':'No similar bins.','size':1})       
+        RESULTS['children'].append({'name':'No similar bins.','size':1})
     print RESULTS
     return RESULTS
 
@@ -148,10 +148,8 @@ def get_data():
             'Category': line['Category'],
             'Date': line['Date'],
             'Location': line['Location'],
-
         })
     return RESULTS
 
 if __name__ == "__main__":
     app.run(debug=True)
-

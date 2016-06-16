@@ -79,11 +79,12 @@ function createVisualization(json, firstRun) {
     if (firstRun) { // Basic setup of page elements.
         generateColors(); //Generate colors for each item
         initializeBreadcrumbTrail();
+        //If there are greater than 10 unique items then use fancytree, else draw a legend and individual checkboxes
         if (numOfUnique >= 10) {
           document.getElementById("tree").style.visibility = "visible";
           document.getElementById("btnResetSearch").style.visibility = "visible";
           document.getElementById("search").style.visibility = "visible";
-            generateCheckBoxes(); //Build the checkbox for each legend item
+          generateCheckBoxes(); //Build the checkbox for each legend item
         } else {
           drawLegend();
           generateCheckBoxesLegend(); //Build the checkbox for each legend item
@@ -352,6 +353,7 @@ function generateColors() {
 
 //Generates checkboxes
 function generateCheckBoxes() {
+    //Build JSON object for fancytree
     alphabet = [];
     var str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (var i = 0; i < str.length; i++) {
@@ -402,6 +404,8 @@ function generateCheckBoxes() {
                 createVisualization(json, false);
             }
         });
+
+        //Build fancyTree and search
         var tree = $("#tree").fancytree("getTree");
 
         $("input[name=search]").keyup(function(e) {
@@ -567,7 +571,7 @@ function drawLegend() {
         });
 }
 
-//Generates checkboxes
+//Generates checkboxes for use with legend if less than 10 unique items are in sequence
 function generateCheckBoxesLegend() {
     for (var i = 0; i < numOfUnique; i++) {
         if (unique[i] != 'end') {

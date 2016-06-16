@@ -1,15 +1,10 @@
-<html lang="en">
-
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Secured Data Visualization</title>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <link href="{{ url_for('static', filename='css/sequences.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-      <link rel="icon" href="{{url_for('static', filename='sunrise.png')}}"></link>
-
+    <link rel="icon" href="{{url_for('static', filename='sunrise.png')}}"></link>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='js/palette.js') }}"></script>
@@ -19,36 +14,35 @@
     <script src="{{ url_for('static', filename='js/jquery.fancytree.filter.js') }}"></script>
     <link href="https://cdn.jsdelivr.net/jquery.fancytree/2.18.0/skin-win8/ui.fancytree.min.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
-<br>
-<div class="container" style='font-family:"Gill Sans", "Gill Sans MT"''><ul class="nav nav-pills nav-justified">
-  <li><a href="/">Home</a></li>
-  <li><a href="/treemap">Tree Map</a></li>
-  <li><a href="/after">Fishbone</a></li>
-  <li class="active"><a href="/sunburst">Sunburst</a></li>
-</ul></div>
-<br><br>
-<div id="main">
-      <div id="sequence"></div>
-      <div id="chart">
-          <div id="explanation" style="visibility: hidden; top: 310px; left: 355px;">
-              <span id="percentage"></span>
-              <br/> of the time this sequence occurs.
-          </div>
-      </div>
-</div>
-  <div id = "sidebar">
-  <input id = "search" name="search" placeholder="Filter..." autocomplete="off" style="visibility: hidden"></input>
-  <button id="btnResetSearch" style="visibility: hidden">&times;</button>
-  <div id="tree" style="visibility: hidden"></div>
-  <div id="boxes"></div>
-  <div id="legend"></div>
-  </div>
-  <script src="{{ url_for('static', filename='js/sequences.js') }}"></script>
-  <script type="text/javascript">
-      d3.select(self.frameElement).style("height", "700px");</script>
+    <div class="container" style='font-family:"Gill Sans", "Gill Sans MT"'>
+        <ul class="nav nav-pills nav-justified">
+            <li><a href="/">Home</a></li>
+            <li><a href="/treemap">Tree Map</a></li>
+            <li><a href="/after">Fishbone</a></li>
+            <li class="active"><a href="/sunburst">Sunburst</a></li>
+        </ul>
+    </div>
+    <div id="main">
+        <div id="sequence"></div>
+        <div id="chart">
+            <div id="explanation" style="visibility: hidden; top: 310px; left: 355px;">
+                <span id="percentage"></span>
+                <br/> of the time this sequence occurs.
+            </div>
+        </div>
+    </div>
+    <div id="sidebar">
+        <input id="search" name="search" placeholder="Filter..." autocomplete="off" style="visibility: hidden"></input>
+        <button id="btnResetSearch" style="visibility: hidden">&times;</button>
+        <div id="tree" style="visibility: hidden"></div>
+        <div id="boxes"></div>
+        <div id="legend"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/sequences.js ') }}"></script>
+    <script type="text/javascript">
+        d3.select(self.frameElement).style("height", "700px");
+    </script>
 
 </body>
-
 </html>
