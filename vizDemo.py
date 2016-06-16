@@ -1,7 +1,7 @@
 from flask import Flask, render_template, g, jsonify, redirect, url_for, abort, flash
 import sqlite3
 import os
-import csv, io, StringIO
+import csv, io, StringIO,json
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -9,7 +9,6 @@ app.config.from_object(__name__)
 @app.route("/dataRaw")
 def dataRaw():
     con = sqlite3.connect('data.db')
-    con.text_factory = str
     cur = con.cursor()
     cur.execute('select * from data')
     r = csv2string(cur.fetchall())
@@ -40,7 +39,7 @@ def makebarchart():
 
 @app.route("/data")
 def Data():
-    return jsonify(get_data())
+    return json.dumps(get_data())
 
 @app.route("/after/")
 def after():
