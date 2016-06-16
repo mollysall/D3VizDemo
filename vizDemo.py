@@ -137,18 +137,32 @@ def get_binentities(n):
     print RESULTS
     return RESULTS
 
-filename = "NPSData2.csv"
+# filename = "NPSData2.csv"
 
+# def get_data():
+#     fin = file(filename, 'rb')
+#     data = fin.read()
+#     RESULTS = []
+#     for line in csv.DictReader(data.splitlines(), skipinitialspace=True):
+#         RESULTS.append({
+#             'Category': line['Category'],
+#             'Date': line['Date'],
+#             'Location': line['Location'],
+#         })
+#     return RESULTS
+
+DATABASE = "NPSDATA.db"
 def get_data():
-    fin = file(filename, 'rb')
-    data = fin.read()
+    rows = g.db.execute("SELECT * FROM NPSData2").fetchall()
     RESULTS = []
-    for line in csv.DictReader(data.splitlines(), skipinitialspace=True):
+    for i in rows:
         RESULTS.append({
-            'Category': line['Category'],
-            'Date': line['Date'],
-            'Location': line['Location'],
+            'Category': i[0],
+            'Date': i[1],
+            'Location': i[2],
+
         })
+    print len(RESULTS)
     return RESULTS
 
 if __name__ == "__main__":
