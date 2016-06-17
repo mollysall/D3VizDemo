@@ -11,8 +11,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link type="text/css" href="{{  url_for('static', filename='css/style.css')}}" rel="stylesheet" />
-
-
+    <style>
+        body{
+            background-image: url("{{url_for('static', filename='Background.png')}}")
+        }
+    </style>
 </head>
 
 <body>
@@ -35,14 +38,12 @@
         </div>
 
         <div class="well">
-            <p class="lead">The Fishbone diagram can be used to visualize and sort chronological data based on category, location and date.</p>
-            <p class="text-left"> This visualization uses JavaScript, JQuery, Python, Flask, and the D3 Javascript library to create an interactive timeline that makes it easy to view only pertinent information.
-       
-            <p class="lead">The Tree Map diagram can be used to visualize hierarchical data and the different relationships between bins, entities, and features. </p>
-            <p class="text-left"> This visualization uses JavaScript, JQuery, Python, Flask, and the D3 Javascript library to create an interactive visualization that makes it easy to view only pertinent information.
-    
-            <p class="lead">The Sunburst diagram can be used to visualize and filter sequences of events.</p>
-            <p class="text-left"> This visualization uses JavaScript, JQuery, Python, Flask, and the D3 Javascript library to create an interactive visualization that makes it easy to view only pertinent information.
+            <blockquote><p>The concept of using pictures to understand data has been around for centuries, from maps and graphs in the 17th century to the invention of the pie chart in the early 1800s. Several decades later, one of the most cited examples of statistical graphics occurred when Charles Minard mapped Napoleon’s invasion of Russia. The map depicted the size of the army as well as the path of Napoleon’s retreat from Moscow – and tied that information to temperature and time scales for a more in-depth understanding of the event.
+
+            It’s technology, however, that truly lit the fire under data visualization. Computers made it possible to process large amounts of data at lightning-fast speeds. Today, data visualization has become a rapidly evolving blend of science and art that is certain to change the corporate landscape over the next few years.
+            </p><footer>Data Visualization - What it is and Why it Matters</footer></blockquote>
+
+            <p class="lead">These data visualizations use D3, jQuery, JavaScript, CSS, and HTML to visualize and contextualize a wide array of data.</p>
         </div>
 
     </div>
