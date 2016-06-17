@@ -35,8 +35,12 @@ def index():
     return render_template("index.html")
 
 @app.route("/treemap")
-def home():
+def tree():
     return render_template("treemap.html")
+
+@app.route("/treemap0")
+def tree0():
+    return render_template("originaltreemap.html")
 
 @app.route("/barchart")
 def makebarchart():
