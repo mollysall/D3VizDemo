@@ -619,6 +619,9 @@ function update() {
 
 		var arr = intersection(editableD, editableS);
 
+		d3.select("#tl2").remove();
+		makeTestData(arr);
+
 		createTheObject(arr);
 
 
