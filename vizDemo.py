@@ -38,7 +38,7 @@ def index():
 def tree():
     return render_template("treemap.html")
 
-@app.route("/treemap0")
+@app.route("/originaltreemap")
 def tree0():
     return render_template("originaltreemap.html")
 
@@ -53,6 +53,10 @@ def Data():
 @app.route("/after/")
 def after():
     return render_template('after.html')
+
+@app.route("/fbO")
+def fbO():
+    return render_template('fbO.html')
 
 
 DATABASE = 'Tree.db'

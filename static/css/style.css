@@ -59,7 +59,7 @@ html, body{ margin: 0; padding: 0; overflow: hidden;}
   left: 0;
 }
 
-.dropdown {
+#select.dropdown {
   /*position: absolute;*/
   top:50%;
   /*transform: translateY(-50%);*/
@@ -69,29 +69,30 @@ html, body{ margin: 0; padding: 0; overflow: hidden;}
   color: #fff;
 }*/
 
-.dropdown dd,
-.dropdown dt {
+
+#select.dropdown dd,
+#select.dropdown dt {
   margin: 0px;
   padding: 0px;
 }
 
-.dropdown ul {
+#select.dropdown ul {
   margin: -1px 0 0 0;
 }
 
-.dropdown dd {
+#select.dropdown dd {
   position: relative;
 }
 
-.dropdown a,
-.dropdown a:visited {
+#select.dropdown a,
+#select.dropdown a:visited {
   color: #fff;
   text-decoration: none;
   outline: none;
   font-size: 12px;
 }
 
-.dropdown dt a {
+#select.dropdown dt a {
   background-color: #4F6877;
   display: block;
   padding: 8px 20px 5px 10px;
@@ -102,14 +103,14 @@ html, body{ margin: 0; padding: 0; overflow: hidden;}
   width: 272px;
 }
 
-.dropdown dt a span,
+#select.dropdown dt a span,
 .multiSel span {
   cursor: pointer;
   display: inline-block;
   padding: 0 3px 2px 0;
 }
 
-.dropdown dd ul {
+#select.dropdown dd ul {
   background-color: #4F6877;
   border: 0;
   color: #fff;
@@ -124,16 +125,16 @@ html, body{ margin: 0; padding: 0; overflow: hidden;}
   overflow: auto;
 }
 
-.dropdown span.value {
+#select.dropdown span.value {
   display: none;
 }
 
-.dropdown dd ul li a {
+#select.dropdown dd ul li a {
   padding: 5px;
   display: block;
 }
 
-.dropdown dd ul li a:hover {
+#select.dropdown dd ul li a:hover {
   background-color: #fff;
 }
 

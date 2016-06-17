@@ -23,27 +23,34 @@
 
     <div class="container">
         <br>
-        <div class="container">
-          <ul class="nav nav-pills nav-justified">
-              <li><a href="/">Home</a></li>
+           <div class="container" style='font-family:"Gill Sans", "Gill Sans MT"; left: 0px'>
+      <ul class="nav nav-pills nav-justified">
+        <li class="current"><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tree Map
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/">Original</a></li>
+              <li><a href="/treemap">Modified</a></li>
+            </ul>
+          </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">FishBone
+              <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/fbO">Original</a></li>
+                <li><a href="/after">Modified</a></li>
+              </ul>          
+        </li>
               <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tree Map
-                    <span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sunburst
+                  <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                      <li><a href="/treemap0">Original</a></li>
-                      <li><a href="/treemap">Modified</a></li>
+                    <li><a href="/sunburstO">Original</a></li>
+                    <li><a href="/sunburst">Modified</a></li>
                   </ul>
-              </li>
-              <li><a href="/after">Fishbone</a></li>
-              <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sunburst
-                    <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                      <li><a href="/sunburstO">Original</a></li>
-                      <li><a href="/sunburst">Modified</a></li>
-                  </ul>
-              </li>
-        </div>
+                </li>
+      </div>
         <br>
         <div class="jumbotron">
             <h1>D3 Data Visualizations</h1>
