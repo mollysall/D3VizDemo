@@ -21,91 +21,116 @@
 <body>
     <br>
     <div class="container" style='font-family:"Gill Sans", "Gill Sans MT"; left: 0px'>
-      <ul class="nav nav-pills nav-justified">
-        <li><a href="/">Home</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tree Map
+        <ul class="nav nav-pills nav-justified">
+            <li><a href="/">Home</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tree Map
             <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="/">Original</a></li>
-              <li><a href="/treemap">Modified</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">FishBone
+                <ul class="dropdown-menu">
+                    <li><a href="/">Original</a></li>
+                    <li><a href="/treemap">Modified</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">FishBone
               <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="/fbO">Original</a></li>
-                <li><a href="/after">Modified</a></li>
-              </ul>          </li>
-              <li class="dropdown">
+                <ul class="dropdown-menu">
+                    <li><a href="/fbO">Original</a></li>
+                    <li><a href="/after">Modified</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sunburst
                   <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
+                <ul class="dropdown-menu">
                     <li><a href="/sunburstO">Original</a></li>
                     <li><a href="/sunburst">Modified</a></li>
-                  </ul>
-                </li>
-      </div>
+                </ul>
+            </li>
+    </div>
     <br>
     <br>
     <div class="container" id="Tree">
-      <form>
-        <label><input type="radio" name="mode" value="size" checked> Size</label>
-        <label><input type="radio" name="mode" value="count"> Count</label>
-      </form>
-      <script>
+        <form>
+            <label>
+                <input type="radio" name="mode" value="size" checked> Size</label>
+            <label>
+                <input type="radio" name="mode" value="count"> Count</label>
+        </form>
+        <script>
+            var margin = {
+                    top: 40,
+                    right: 10,
+                    bottom: 10,
+                    left: 10
+                },
+                width = 960 - margin.left - margin.right,
+                height = 500 - margin.top - margin.bottom;
 
-      var margin = {top: 40, right: 10, bottom: 10, left: 10},
-          width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+            var color = d3.scale.category20c();
 
-      var color = d3.scale.category20c();
+            var treemap = d3.layout.treemap()
+                .size([width, height])
+                .sticky(true)
+                .value(function(d) {
+                    return d.size;
+                });
 
-      var treemap = d3.layout.treemap()
-          .size([width, height])
-          .sticky(true)
-          .value(function(d) { return d.size; });
+            var div = d3.select("body").append("div")
+                .style("position", "relative")
+                .style("width", (width + margin.left + margin.right) + "px")
+                .style("height", (height + margin.top + margin.bottom) + "px")
+                .style("left", margin.left + "px")
+                .style("top", margin.top + "px");
 
-      var div = d3.select("body").append("div")
-          .style("position", "relative")
-          .style("width", (width + margin.left + margin.right) + "px")
-          .style("height", (height + margin.top + margin.bottom) + "px")
-          .style("left", margin.left + "px")
-          .style("top", margin.top + "px");
+            d3.json("static/flare.json", function(error, root) {
+                if (error) throw error;
 
-      d3.json("static/flare.json", function(error, root) {
-        if (error) throw error;
+                var node = div.datum(root).selectAll(".node")
+                    .data(treemap.nodes)
+                    .enter().append("div")
+                    .attr("class", "node")
+                    .call(position)
+                    .style("background", function(d) {
+                        return d.children ? color(d.name) : null;
+                    })
+                    .text(function(d) {
+                        return d.children ? null : d.name;
+                    });
 
-        var node = div.datum(root).selectAll(".node")
-            .data(treemap.nodes)
-          .enter().append("div")
-            .attr("class", "node")
-            .call(position)
-            .style("background", function(d) { return d.children ? color(d.name) : null; })
-            .text(function(d) { return d.children ? null : d.name; });
+                d3.selectAll("input").on("change", function change() {
+                    var value = this.value === "count" ?
 
-        d3.selectAll("input").on("change", function change() {
-          var value = this.value === "count"
-              ? function() { return 1; }
-              : function(d) { return d.size; };
+                        function() {
+                            return 1;
+                        } :
+                        function(d) {
+                            return d.size;
+                        };
 
-          node
-              .data(treemap.value(value).nodes)
-            .transition()
-              .duration(1500)
-              .call(position);
-        });
-      });
+                    node
+                        .data(treemap.value(value).nodes)
+                        .transition()
+                        .duration(1500)
+                        .call(position);
+                });
+            });
 
-      function position() {
-        this.style("left", function(d) { return d.x + "px"; })
-            .style("top", function(d) { return d.y + "px"; })
-            .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
-            .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
-      }
-
-      </script>
+            function position() {
+                this.style("left", function(d) {
+                        return d.x + "px";
+                    })
+                    .style("top", function(d) {
+                        return d.y + "px";
+                    })
+                    .style("width", function(d) {
+                        return Math.max(0, d.dx - 1) + "px";
+                    })
+                    .style("height", function(d) {
+                        return Math.max(0, d.dy - 1) + "px";
+                    });
+            }
+        </script>
     </div>
 
 </body>
