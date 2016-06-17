@@ -21,12 +21,18 @@
     <div class="container">
         <br>
         <div class="container">
-            <ul class="nav nav-pills nav-justified">
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="/treemap">Tree Map</a></li>
-                <li><a href="/after">Fishbone</a></li>
-                <li><a href="/sunburst">Sunburst</a></li>
-            </ul>
+          <ul class="nav nav-pills nav-justified">
+              <li><a href="/">Home</a></li>
+              <li><a href="/treemap">Tree Map</a></li>
+              <li><a href="/after">Fishbone</a></li>
+              <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sunburst
+                    <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="/sunburstO">Original</a></li>
+                      <li><a href="/sunburst">Modified</a></li>
+                  </ul>
+              </li>
         </div>
         <br>
         <div class="jumbotron">
@@ -37,10 +43,10 @@
         <div class="well">
             <p class="lead">The Fishbone diagram can be used to visualize and sort chronological data based on category, location and date.</p>
             <p class="text-left"> This visualization uses JavaScript, JQuery, Python, Flask, and the D3 Javascript library to create an interactive timeline that makes it easy to view only pertinent information.
-       
+
             <p class="lead">The Tree Map diagram can be used to visualize hierarchical data and the different relationships between bins, entities, and features. </p>
             <p class="text-left"> This visualization uses JavaScript, JQuery, Python, Flask, and the D3 Javascript library to create an interactive visualization that makes it easy to view only pertinent information.
-    
+
             <p class="lead">The Sunburst diagram can be used to visualize and filter sequences of events.</p>
             <p class="text-left"> This visualization uses JavaScript, JQuery, Python, Flask, and the D3 Javascript library to create an interactive visualization that makes it easy to view only pertinent information.
         </div>
