@@ -25,6 +25,11 @@ def csv2string(data):
 def sun():
     return render_template('sunburst.html')
 
+@app.route('/sunburstO')
+def sunO():
+    return render_template('sunburstO.html')
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
